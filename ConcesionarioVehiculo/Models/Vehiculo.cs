@@ -23,5 +23,11 @@ namespace ConcesionarioVehiculo.Models
         [Column(TypeName = "decimal(18,2)")]
         [Display(Name = "Precio")]
         public decimal Precio { get; set; }
+
+        [Range(1, int.MaxValue, ErrorMessage = "Debe seleccionar una marca.")]
+        [Display(Name = "Marca")]
+        public int MarcaId { get; set; }
+
+        public Marca? Marca { get; set; }
     }
 }

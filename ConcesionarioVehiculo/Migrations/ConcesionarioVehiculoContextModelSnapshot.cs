@@ -20,6 +20,28 @@ namespace ConcesionarioVehiculo.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("ConcesionarioVehiculo.Models.Marca", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("PaisOrigen")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Marcas");
+                });
+
             modelBuilder.Entity("ConcesionarioVehiculo.Models.Vehiculo", b =>
                 {
                     b.Property<int>("Id")
@@ -29,6 +51,9 @@ namespace ConcesionarioVehiculo.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("Anio")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MarcaId")
                         .HasColumnType("int");
 
                     b.Property<string>("Modelo")
@@ -41,7 +66,25 @@ namespace ConcesionarioVehiculo.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("MarcaId");
+
                     b.ToTable("Vehiculo");
+                });
+
+            modelBuilder.Entity("ConcesionarioVehiculo.Models.Vehiculo", b =>
+                {
+                    b.HasOne("ConcesionarioVehiculo.Models.Marca", "Marca")
+                        .WithMany("Vehiculos")
+                        .HasForeignKey("MarcaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Marca");
+                });
+
+            modelBuilder.Entity("ConcesionarioVehiculo.Models.Marca", b =>
+                {
+                    b.Navigation("Vehiculos");
                 });
 #pragma warning restore 612, 618
         }

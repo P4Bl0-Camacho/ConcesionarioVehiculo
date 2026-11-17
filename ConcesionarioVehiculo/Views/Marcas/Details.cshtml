@@ -1,4 +1,4 @@
-@model ConcesionarioVehiculo.Models.Vehiculo
+@model ConcesionarioVehiculo.Models.Marca
 
 @{
     ViewData["Title"] = "Details";
@@ -7,28 +7,28 @@
 <h1>Details</h1>
 
 <div>
-    <h4>Vehiculo</h4>
+    <h4>Marca</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Modelo)
+            @Html.DisplayNameFor(model => model.Nombre)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Modelo)
+            @Html.DisplayFor(model => model.Nombre)
         </dd>
     </dl>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Anio)
+            @Html.DisplayNameFor(model => model.PaisOrigen)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Anio)
+            @Html.DisplayFor(model => model.PaisOrigen)
         </dd>
     </dl>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Precio)
+            @Html.DisplayNameFor(model => model.Vehiculos)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Precio)
+            @Html.DisplayFor(model => model.Vehiculos)
         </dd>
     </dl>
 </div>

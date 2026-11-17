@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ConcesionarioVehiculo.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 public class VehiculosController : Controller
 {
@@ -13,9 +14,10 @@ public class VehiculosController : Controller
     }
 
     // GET: VEHICULOS
-    public async Task<IActionResult> Index()    
+    public async Task<IActionResult> Index()
     {
-        return View(await _context.Vehiculo.ToListAsync());
+        var vehiculos = _context.Vehiculo.Include(v => v.Marca);
+        return View(await vehiculos.ToListAsync());
     }
 
     // GET: VEHICULOS/Details/5
@@ -27,6 +29,7 @@ public class VehiculosController : Controller
         }
 
         var vehiculo = await _context.Vehiculo
+            .Include(v => v.Marca)
             .FirstOrDefaultAsync(m => m.Id == id);
         if (vehiculo == null)
         {
@@ -39,6 +42,7 @@ public class VehiculosController : Controller
     // GET: VEHICULOS/Create
     public IActionResult Create()
     {
+        ViewData["MarcaId"] = new SelectList(_context.Marcas, "Id", "Nombre");
         return View();
     }
 
@@ -47,7 +51,8 @@ public class VehiculosController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("Id,Modelo,Anio,Precio")] Vehiculo vehiculo)
+    public async Task<IActionResult> Create(
+    [Bind("Id,Modelo,Anio,Precio,MarcaId")] Vehiculo vehiculo)
     {
         if (ModelState.IsValid)
         {
@@ -55,6 +60,7 @@ public class VehiculosController : Controller
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+        ViewData["MarcaId"] = new SelectList(_context.Marcas, "Id", "Nombre", vehiculo.MarcaId);
         return View(vehiculo);
     }
 
@@ -71,6 +77,7 @@ public class VehiculosController : Controller
         {
             return NotFound();
         }
+        ViewData["MarcaId"] = new SelectList(_context.Marcas, "Id", "Nombre", vehiculo.MarcaId);
         return View(vehiculo);
     }
 
@@ -106,6 +113,7 @@ public class VehiculosController : Controller
             }
             return RedirectToAction(nameof(Index));
         }
+        ViewData["MarcaId"] = new SelectList(_context.Marcas, "Id", "Nombre", vehiculo.MarcaId);
         return View(vehiculo);
     }
 
@@ -118,6 +126,7 @@ public class VehiculosController : Controller
         }
 
         var vehiculo = await _context.Vehiculo
+            .Include(v => v.MarcaId)
             .FirstOrDefaultAsync(m => m.Id == id);
         if (vehiculo == null)
         {
