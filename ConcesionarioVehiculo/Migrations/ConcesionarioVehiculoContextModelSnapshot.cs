@@ -33,7 +33,8 @@ namespace ConcesionarioVehiculo.Migrations
 
                     b.Property<string>("Modelo")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
 
                     b.Property<decimal>("Precio")
                         .HasColumnType("decimal(18,2)");
