@@ -1,9 +1,11 @@
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 using ConcesionarioVehiculo.Data;
 using ConcesionarioVehiculo.Models;
 
+[Authorize(Roles = "Vendedor")]
 public class MarcasController : Controller
 {
     private readonly ConcesionarioVehiculoContext _context;
@@ -14,12 +16,16 @@ public class MarcasController : Controller
     }
 
     // GET: MARCAS
+
+    [AllowAnonymous]
     public async Task<IActionResult> Index()
     {
         return View(await _context.Marcas.ToListAsync());
     }
 
     // GET: MARCAS/Details/5
+
+    [AllowAnonymous]
     public async Task<IActionResult> Details(int? id)
     {
         if (id == null)

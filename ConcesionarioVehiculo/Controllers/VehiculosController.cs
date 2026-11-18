@@ -6,6 +6,7 @@ using ConcesionarioVehiculo.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Authorization;
 
+[Authorize(Roles = "Vendedor")]
 public class VehiculosController : Controller
 {
     private readonly ConcesionarioVehiculoContext _context;
@@ -16,6 +17,8 @@ public class VehiculosController : Controller
     }
 
     // GET: VEHICULOS
+
+    [AllowAnonymous]
     public async Task<IActionResult> Index()
     {
         var vehiculos = _context.Vehiculos.Include(v => v.Marca);
@@ -23,6 +26,8 @@ public class VehiculosController : Controller
     }
 
     // GET: VEHICULOS/Details/5
+
+    [AllowAnonymous]
     public async Task<IActionResult> Details(int? id)
     {
         if (id == null)
