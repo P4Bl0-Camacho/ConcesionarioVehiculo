@@ -1,5 +1,6 @@
 using ConcesionarioVehiculo.Data;
 using ConcesionarioVehiculo.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("ConcesionarioVehiculoContext") ?? throw new InvalidOperationException("Connection string 'ConcesionarioVehiculoContext' not found.");
@@ -10,9 +11,15 @@ builder.Services.AddDbContext<ConcesionarioVehiculoContext>(options => options.U
 builder.Services.AddControllersWithViews();
 builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
     options.SignIn.RequireConfirmedAccount = false)
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ConcesionarioVehiculoContext>();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    await SeedData.InicializarAsync(scope.ServiceProvider);
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
