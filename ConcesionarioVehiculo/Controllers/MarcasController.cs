@@ -1,6 +1,7 @@
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using ConcesionarioVehiculo.Data;
 using ConcesionarioVehiculo.Models;
 
 public class MarcasController : Controller

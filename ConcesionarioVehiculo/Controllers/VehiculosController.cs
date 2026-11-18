@@ -1,8 +1,10 @@
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using ConcesionarioVehiculo.Data;
 using ConcesionarioVehiculo.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
 
 public class VehiculosController : Controller
 {
@@ -16,7 +18,7 @@ public class VehiculosController : Controller
     // GET: VEHICULOS
     public async Task<IActionResult> Index()
     {
-        var vehiculos = _context.Vehiculo.Include(v => v.Marca);
+        var vehiculos = _context.Vehiculos.Include(v => v.Marca);
         return View(await vehiculos.ToListAsync());
     }
 
@@ -28,7 +30,7 @@ public class VehiculosController : Controller
             return NotFound();
         }
 
-        var vehiculo = await _context.Vehiculo
+        var vehiculo = await _context.Vehiculos
             .Include(v => v.Marca)
             .FirstOrDefaultAsync(m => m.Id == id);
         if (vehiculo == null)
@@ -72,7 +74,7 @@ public class VehiculosController : Controller
             return NotFound();
         }
 
-        var vehiculo = await _context.Vehiculo.FindAsync(id);
+        var vehiculo = await _context.Vehiculos.FindAsync(id);
         if (vehiculo == null)
         {
             return NotFound();
@@ -125,8 +127,8 @@ public class VehiculosController : Controller
             return NotFound();
         }
 
-        var vehiculo = await _context.Vehiculo
-            .Include(v => v.MarcaId)
+        var vehiculo = await _context.Vehiculos
+            .Include(v => v.Marca)
             .FirstOrDefaultAsync(m => m.Id == id);
         if (vehiculo == null)
         {
@@ -141,10 +143,10 @@ public class VehiculosController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int? id)
     {
-        var vehiculo = await _context.Vehiculo.FindAsync(id);
+        var vehiculo = await _context.Vehiculos.FindAsync(id);
         if (vehiculo != null)
         {
-            _context.Vehiculo.Remove(vehiculo);
+            _context.Vehiculos.Remove(vehiculo);
         }
 
         await _context.SaveChangesAsync();
@@ -153,6 +155,6 @@ public class VehiculosController : Controller
 
     private bool VehiculoExists(int? id)
     {
-        return _context.Vehiculo.Any(e => e.Id == id);
+        return _context.Vehiculos.Any(e => e.Id == id);
     }
 }
